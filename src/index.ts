@@ -6,6 +6,7 @@ dotenv.config();
 import connectDb from './config/database';
 import routes from './routes';
 import configExpress from './config/express';
+import log from './logger'
 
 const app = express();
 
@@ -21,5 +22,5 @@ connectDb();
 routes(app);
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  log.info(`Server is running on port ${port}`);
 });
