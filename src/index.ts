@@ -22,5 +22,5 @@ connectDb();
 routes(app);
 
 app.listen(port, () => {
-  log.info(`Server is running on port ${port}`);
+  log.info(`Server is running on port ${port}!!`);
 });
