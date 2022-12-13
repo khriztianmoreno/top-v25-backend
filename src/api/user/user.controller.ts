@@ -39,6 +39,8 @@ export async function handleCreateUser(req: Request, res: Response, next: NextFu
   try {
     const user = await createUser(data);
 
+    // TODO: Send email to user
+
     return res.status(201).json(user);
   } catch (error: any) {
     log.error(error)
