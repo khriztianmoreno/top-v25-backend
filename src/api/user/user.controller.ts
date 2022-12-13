@@ -61,6 +61,8 @@ export async function handleCreateUser(req: Request, res: Response, next: NextFu
 
     await sendMailSendGrid(msg)
 
+    // TODO: Send email to user
+
     return res.status(201).json(user);
   } catch (error: any) {
     log.error(error)
