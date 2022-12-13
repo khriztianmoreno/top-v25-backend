@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import sgMail from '@sendgrid/mail';
@@ -40,6 +39,3 @@ export function sendMailSendGrid(data: sgMail.MailDataRequired) {
 
   return sgMail.send(data);
 }
-=======
-// TODO: your email service here
->>>>>>> 3e05505177d721c1e751d8b73451fb6630bee141
