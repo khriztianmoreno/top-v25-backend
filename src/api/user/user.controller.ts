@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import crypto from 'crypto';
 
 import {
   getAllUsers,
@@ -7,6 +8,7 @@ import {
   createUser,
 } from "./user.services";
 import log from '../../logger'
+import { sendMailSendGrid, sendNodeMailer } from '../../utils/emails';
 
 export async function handleAllGetUsers(req: Request, res: Response, next: NextFunction) {
   try {
@@ -36,8 +38,28 @@ export async function handleGetUser(req: Request, res: Response, next: NextFunct
 
 export async function handleCreateUser(req: Request, res: Response, next: NextFunction) {
   const data = req.body;
+  const newUser = data
   try {
-    const user = await createUser(data);
+    const hash = crypto.createHash('sha256').update(data.email).digest('hex');
+
+    newUser.passwordResetToken = hash;
+    newUser.passwordResetExpires = Date.now() + 3_600_000 * 24; // 24 hours
+
+    const user = await createUser(newUser);
+
+    const msg = {
+      to: user.email,
+      from: `'No reply 💻' <cristian.moreno@makeitreal.camp>`,
+      subject: 'Activate your account',
+      templateId: 'd-649011f35b854690a0e5f47de11eb2f2',
+      dynamic_template_data: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        url: `${process.env.FRONTEND_URL}/activate/${hash}`, // URL del frontend
+      },
+    }
+
+    await sendMailSendGrid(msg)
 
     return res.status(201).json(user);
   } catch (error: any) {
