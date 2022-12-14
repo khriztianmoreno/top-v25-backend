@@ -1,7 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-import { userProfileType } from './user.types';
+import { userProfileType, paymentType } from './user.types';
 
 export interface UserDocument extends Document {
   firstName: string;
@@ -13,6 +13,7 @@ export interface UserDocument extends Document {
   isActive: boolean;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
+  payment?: paymentType;
   createdAt: Date;
   updatedAt: Date;
 
@@ -20,6 +21,21 @@ export interface UserDocument extends Document {
   profile: userProfileType;
   comparePassword: (password: string) => Promise<boolean>;
 }
+
+const Payment = new Schema({
+  customerId: String,
+  cards: [
+    {
+      paymentMethodId: String,
+      brand: String,
+      country: String,
+      expMonth: Number,
+      expYear: Number,
+      funding: String,
+      last4: String,
+    },
+  ],
+});
 
 const UserSchema = new Schema({
   firstName: {
@@ -58,6 +74,7 @@ const UserSchema = new Schema({
   },
   passwordResetToken: String,
   passwordResetExpires: Date,
+  payment: Payment,
 }, {
   timestamps: true,
   versionKey: false,

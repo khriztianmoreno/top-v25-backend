@@ -5,3 +5,16 @@ export type userProfileType = {
   avatar: string;
   role: string;
 }
+
+export type paymentType = {
+  customerId: string;
+  cards: {
+    paymentMethodId: string;
+    brand: string;
+    country: string;
+    expMonth: number;
+    expYear: number;
+    funding: string;
+    last4: string;
+  }[];
+}

@@ -22,10 +22,7 @@ export function createUser(
   return User.create(input);
 }
 
-export function updateUser(
-  id: string,
-  user: DocumentDefinition<Omit<UserDocument, 'createdAt' | 'updatedAt'>>
-) {
+export function updateUser(id: string, user: object) {
   const updatedUser = User.findByIdAndUpdate(id, user, { new: true });
   return updatedUser;
 }
